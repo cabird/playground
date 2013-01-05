@@ -1,2 +1,5 @@
 GitBuilder.py
+authdata.json
+autobuild.config
 autobuild.log
+oauthtoken_response.json
