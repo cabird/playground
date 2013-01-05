@@ -1,0 +1,17 @@
+{
+  "created_at": "2013-01-04T19:17:14Z",
+  "note_url": null,
+  "app": {
+    "url": "http://www.cabird.com",
+    "name": "GitAutoBuilder"
+  },
+  "url": "https://api.github.com/authorizations/1047551",
+  "token": "725338df5f94c58bb73263094e1f46753a5194e7",
+  "updated_at": "2013-01-04T19:17:14Z",
+  "scopes": [
+    "repo"
+  ],
+  "note": "for git autobuilder",
+  "id": 1047551
+}
+

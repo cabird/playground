@@ -1,67 +1,92 @@
-import urllib2, json, sys, os, time
+import urllib2, json, sys, os, time, subprocess
+
+#to get a token, use:
+#curl -u username:password -d '{"scopes":["repo"],"note":"Git Autobuilder"}' \
+#    https://api.github.com/authorizations
 
 #holds all info needed regarding a repository that needs to be autobuilt
 class Repo:
-	def __init__(self, user, repo, branch, localPath):
-		self.user = user
-		self.repo = repo
-		self.branch = branch
-		self.localPath = localPath
+	def __init__(self):
+		self.user = None
+		self.repo = None
+		self.branch = "master"
+		self.localpath = None
+		self.authtoken = None
+		self.etag = None
 
-	def url(self):
-		return "https://api.github.com/repos/%s/%s/events" % (self.user, self.repo)
+	def GetUrl(self):
+		url = "https://api.github.com/repos/%s/%s/events" % (self.user, self.repo)
+		if self.authtoken:
+			url += "?access_token=" + self.authtoken
+		return url 
 
-class EventsResponse:
-	def __init__(self, message, etag):
-		self.message = message
-		self.etag = etag
+	def __str__(self):
+		return "%s/%s:%s" % (self.user, self.repo, self.branch)
 
-def main():
-	etag = None
-	#todo - should have this in a config file.  Should support multiple repos.
-	repo = Repo("cabird", "cv", "master", "/home/cbird/Documents/GitHub/cv")
-	delaySeconds = 5
+def LoadConfig(configFile):
+	repos = []
+	for obj in json.loads(open(configFile).read()):
+		print obj
+		repo = Repo()
+		repo.__dict__.update(obj)
+		repos.append(repo)
+	return repos
 
+def Main(configFile):
+
+	repos = LoadConfig(configFile)
+	print repos
+
+	#poll once per minute
+	delaySeconds = 60
+
+	# poll forever
 	while True:
-		print "requesting with etag", etag
-		# don't fail on an exception.  If there is a problem, then just
-		# continue on (should probably log it).
-		try:
-			eventsResponse = RequestEvents(repo, etag)
-
-			if eventsResponse.message:
-				print "got message:"
-				print eventsResponse.message
-				if not "AUTOBUILT" in eventsResponse.message:
-					BuildAndCommit(repo)
-			etag = eventsResponse.etag
-		except Exception e:
-			print e
-
+		for repo in repos:
+			print "requesting events for repo", repo
+			# don't fail on an exception.  If there is a problem, then just
+			# continue on (should probably log it).
+			try:
+				eventMessage = RequestEvents(repo)
+				if eventMessage:
+					print "got message:"
+					print eventMessage
+					if not "AUTOBUILT" in eventMessage:
+						BuildAndCommit(repo)
+			except urllib2.HTTPError, e:
+				print e
+				raise e
 		time.sleep(delaySeconds)
 
 def BuildAndCommit(repo):
 	#TODO - this assumes all tools are on the path
 	#TODO - need to add checking and dealing with errors
+	os.chdir(repo.localpath)
+	cmd = "git reset --hard && git pull"
+	print cmd
+	if os.system(cmd):
+		print >> sys.stderr, "couldn't sync"
+		return
+	cmd = "(%s) &> autobuild.log" % repo.command
+	print "executing:", cmd
+	if os.system(cmd):
+		print >> sys.stderr, "error executing command, log in autobuild.log"
+	cmd = "git add autobuild.log && git commit -am \"AUTOBUILT\" && git push"
+	print cmd
+	if os.system(cmd):
+		print >> sys.stderr, "error committing and pushing results to git"
 
-	print "building"
-	os.chdir(repo.localPath)
-	os.system("git reset --hard")
-	os.system("git pull")
-	os.system("make clean")
-	os.system("make > make.log")
-	os.system("git add make.log")
-	os.system("git commit -am \"AUTOBUILT\"")
-	os.system("git push")
 
-
-def RequestEvents(repo, etag = None):
-	req = urllib2.Request(repo.url())
-	if etag:
-		req.add_header("If-None-Match", etag)
+def RequestEvents(repo):
+	print repo.GetUrl()
+	req = urllib2.Request(repo.GetUrl())
+	# use the etag if we have one... this lets the server know what the latest
+	# event that we have seen is
+	if repo.etag:
+		req.add_header("If-None-Match", repo.etag)
 
 	#try to get a response, if no new events are available, then
-	#the response will be 304
+	#the response will be 304 which will trigger an HTTPError
 	try:
 		resp = urllib2.urlopen(req)
 	except urllib2.HTTPError, e:
@@ -69,28 +94,23 @@ def RequestEvents(repo, etag = None):
 		if e.code == 304:
 			#there are no new events
 			print "no new events"
-			return EventsResponse(None, etag)
+			return None
 		raise e
 
-	info = resp.info()
-	etag = info.getheader("etag")
-	print etag
+	repo.etag = resp.info().getheader("etag")
 	
 	# get first push Event
 	jsonData = json.loads(resp.read())
 	pushEvent = None
 	for event in jsonData:
-		# get only push events
-		if event["type"] == "PushEvent":
-			# only match pushes to the branch we care about
-			if event["payload"]["ref"] == "refs/heads/" + repo.branch:
-				pushEvent = event
-				break
+		# get only push events for the branch that we care about
+		if event["type"] == "PushEvent" and event["payload"]["ref"] == "refs/heads/" + repo.branch:
+			pushEvent = event
+			break
 	else:
-		return EventsResponse(None, etag)
-
-	message = pushEvent["payload"]["commits"][0]["message"]
-	return EventsResponse(message, etag)
+		return None
+	#return the commit message for the most recent commit
+	return pushEvent["payload"]["commits"][0]["message"]
 		
 if __name__ == "__main__":
-	main()
+	Main(sys.argv[1])
