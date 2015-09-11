@@ -12,13 +12,13 @@ As is often the case, many polls were conducted in the run up to the election an
 
 In the modern era of data collection and statistics, how could such a thing have happened?  The answer lies not in the analysis of the data, but in the hidden biases it contained.  Consider just one of the errors in the polling methodology.  Like today, polling was conducted by randomly selecting and contacting people via telephone.  However, in 1948 telephones were mostly owned by individuals who were more financially well-off. At that time those with higher income levels tended to lean republican.  While the polling was indeed random, the population sampled (people that had telephones) was biased with respect to the entire voting population.  Thus any results drawn from the polling data were similarly biased.
 
-This is interesting cautionary tale, but surely such a mistake couldn't happen in the 21st century on data drawn from software engineering...
+This is an interesting cautionary tale, but surely such a mistake couldn't happen in the 21st century on data drawn from software engineering...
 
 ## Impact in SE
 
 Unfortunately bias exists in software engineering data as well.  If left unchecked and undetected, such bias in data can lead to misleading conclusions and incorrect predicitons.
 
-Bird et al examined defect data sets to determine if there was bias in the links between a defect in the defect database and the corresponding defect correcting change in the source code repository.  Many lines of research, including defect prediction and empirical studies of code quality depend on the ability to "trace" or "link" a defect to the fixing commit.  In four out of five projects, they found that there was bias in the severity level.  That is, the lower the severity level for a fixed bug, the higher the likelihood that there was a link between the defect and the commit.  As an extreme example, while 65% of fixed defects labeled "minor" were able to be linked in Apache, only 15% of those deemed "blocker"s could be linked (see graph for all projects).
+Bird et al examined defect data sets to determine if there was bias in the links between a defect in the defect database and the corresponding defect correcting change in the source code repository.  Many lines of research, including defect prediction and empirical studies of code quality depend on the ability to "trace" or "link" a defect to the fixing commit.  In four out of five projects, they found that there was bias in the severity level.  That is, the lower the severity level for a fixed bug, the higher the likelihood that there was a link between the defect and the commit.  As an extreme example, while 65% of fixed defects labeled "minor" were able to be linked in Apache, only 15% of those deemed "blocker"s could be linked.  The following graph shows the proportions for all projects; only AspectJ is free from bias.
 
 <div>
   <img src="severity-bias.png" height="500px" />
