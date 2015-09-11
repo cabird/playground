@@ -32,15 +32,23 @@ The first step in avoiding the use of biased data is in determining if bias exis
 
 Statistically, one can compare distributions of categorical data using a Pearson's chi-squared test or a Fisher's exact test. Both are readily available in any statistical environment such as R, SPSS, or SAS. For numerical data, the Kolmogorov-Smirnov test (also called the K-S test) can tell you if there is a statistically signficant difference between the two populations.  Note that in all of the above cases, the result of the test is a likelihood that the two distributions come from the same population (a so called p-value).  The tests *do not* indicate how the distributions differ (e.g., which way a sample is biased or which category is over-represented).  It is up to you to investigate further and determine what exactly the bias is and how extreme it is.
 
-Unfortunately, you may not always have such exact knowledge about how a feature is distributed in your population.  In those cases, the best approach is to calculate descriptive statistics from your sample, visualize the sample via histograms, pdfs, or boxplots, and make a judgement about how well the distribution of that feature matches your expectations.
+Unfortunately, you may not always have such exact knowledge about how a feature is distributed in your population.  In the absence of information about the population, distributions from samples expected to be similar could be used.  For instance, if you are examining the number of developers actively contributing to Python over the past year, you could compare the distribution of active developers this year to previous years for Python.  You might also compare it to other projects that you consider to be similar to Python in some way such as Perl or Ruby.  For these types of comparisons, statistical tests are unlikely to provide much value, as the distributions will likely be different to some degree.  A visual inspection will indicate if they are different enough to warrant further investigation.
 
-## Reporting bias
-
-How and when should you report bias
+In those cases, the best approach is to calculate descriptive statistics from your sample, visualize the sample via histograms, pdfs, or boxplots, and make a judgement as to how well the distribution of a feature matches your expectations.
 
 ## Assessing Impact
 
-How can you tell if bias is impacting your results.
+Just because bias exists in a data set does not mean that the bias will have an impact on the results of using the data.  In our study above, we found that when defects used to train a model were biased with respect to severity, the predictions from the model were also biased in a similar way.  However, consider a defect model trained on defects that were fixed mostly (though not completely) on even days of the month (e.g. January 2nd, October 24th, etc.).  While the data is biased with regard to the parity of the fix day, it is unlikely that such a model would do much better when evaluated on defects fixed on even days than on defects fixed on odd days.  
+
+How could we assess the impact of the bias?
+
+If we had access to all defects for all days, that would help.  One could train the model on biased sample and the less biased sample and look at the results to assess impact.  However, usually if we have a biased sample, we don't have access to a larger less biased sample.  One approach is to select subsets of you sample such that they are biased in different ways.  In the above example we could remove any of the odd days so that the model is *only* trained on defects fixed on even days.  Does the performance of this second model differ from the original model?  What about training the model only on days that are multiples of four or ten?  These are "super-biased" data sets. We could go the other way and create a subset from our sample that has the same number of defects fixed on odd and even days.  Does a model trained on this data set perform differently?  If we see (as I suspect we would), that the amount of "day parity" bias does not affect model results, then we may not need to worry about the bias.  If in your investigations, you find that there is a feature (such as age of a developer, size of a commit, or date of a defect report) that is biased and that does effect the results of a study, accuracy of a model, or utility of a technique, you are still not completely out of luck.
+
+## Reporting bias
+
+
+
+
 
 ## Mitigation Strategies
 
