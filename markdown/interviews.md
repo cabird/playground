@@ -1,6 +1,6 @@
-#Interviews
+# Interviews
 
-##Why Interview?
+## Why Interview?
 
 Two years ago I was investigating code review latency at Microsoft.  In the process of analyzing data from code reviews, I found an odd anomaly in my data from a team in Bing.  They had a number of code reviews signed off only minutes (sometimes *under* a minute) after the code review was created by the code change author.  I meticulously looked at the data collection mechanism to see if there was an error.  I manually looked at the reviews in question to try to see how and why the reviews were signed off so fast.  I conducted a number of experiments on the data based on guesses that I had.  All to no avail.  As a last resort, I contacted one of the developers on the team and scheduled an interview with him about his team.  He explained that the reason for the lightning fast reviews was that they would conduct code reviews in person with two or three developers huddled around the code authors screen as he explained the change.  Once the reviewers were happy, the author would create the code review in the review system and the reviewers would immediately sign off on the review.  The code review as manifest in the system didn't actually reflect how code review was being done by the team.  It had never occurred to me that this might be the reason for my data anomaly and if I hadn't taken the time to actually ask the developer I still wouldn't know.  In just a few minutes, he had answered a question that I hadn't been able to answer after hours of testing hypotheses on data.  In my view, this is one of the primary benefits of doing interviews.   Unlike quantitative approaches where you must have some idea or hypothesis ahead of time (you can't compute a metric or run a t-test without first deciding what you want to measure or test), you can learn things in an interview that you would never have thought of yourself.
 
@@ -12,14 +12,14 @@ Generally, when we include interviews in our research, we follow the steps in th
   <img src="interview-workflow.PNG" width="600px" />
 </div>
 
-##The Interview Guide
+## The Interview Guide
 
 We have found that creating an interview guide helps interview research in a number of ways.  An interview guide is contains a list of the high level topics that you plan on covering in the interview with the high level questions that you want to answer under each topic.  We usually limit the guide to one page so that it's easy to refer to and to make sure that we're not getting too low level.  The process of creating such a guide can help to focus your line of thinking and therefore questioning.
 
 When conducting the interview, we always take a copy of the guide so that we can easily cross off questions or topics as they are covered.   Often we find that some questions are answered during the course of our conversation with the interviewee and so we don't end up explicitly asking all of the questions. It is important to remember that the interview guide really is only a *guide*.  You don't have to follow the same ordering and there's nothing wrong with "going off script" at times if a particular line of questioning that you hadn't anticipated seems worthwhile.  However, the guide can help you with pacing during an interview.  If you're ten minutes into a thirty minute interview and you realize that you've only covered one topic out of the five on your guide, then you still have time to get back on track.
 
 
-##Selecting Interviewees
+## Selecting Interviewees
 
 While random sampling of a population is a good route to go when doing quantitative analysis with a large sample, it is not the best approach when selecting interviewees.  Due to the time and effort required in conducting interviews, it is unlikely that you would be able to get a large enough sample, and the data gathered from interviews is usually not quantitative in nature.  Instead, I focus on capturing in my sample as much variation as possible along the dimensions that I believe may have an effect on the topic of my research.  
 
@@ -28,7 +28,7 @@ As an example, I recently was trying to understand how people were using code re
 You may not always be fortunate enough to able to pick and choose your interviewees.  In that case, you can take a "saturation" based approach.  If you reach the point where you have not received any new answers to your questions after the last three to five interviews, then you have likely reached *saturation* and further interviews are unlikely to provide much value.  
 
 
-##Recruitment
+## Recruitment
 
 Once you have determined who you want to recruit for interviews, you need to contact them.  We've found that it can be helpful to do when contacting them, whether it be via email or some other means.
 
@@ -40,7 +40,7 @@ Once you have determined who you want to recruit for interviews, you need to con
  * Tell them how they were selected.  Did you select them because they fit some criteria or were they purely randomly selected?
  * Share any information they need and ask for any information you need to be able to conduct the interview.  This could include things sharing your skype name, asking them where their office is, providing a link to a consent form they need to sign prior to the interview.
 
-##Collecting Background Data
+## Collecting Background Data
 
 Depending on your goal, you may need to collect information specific to the interviewee prior to conducting the interview.  As an example, a few years ago we were investigating the value of categorizing source code commits (Hindle, 2012).  As part of this, once a developer had accepted an interview invitation, we categorized their commits and created graphs for each category over time so that we could ask them about the peaks and valleys of activity.  
 
@@ -51,7 +51,7 @@ Depending on your goal, you may need to collect information specific to the inte
 While collecting individual specific data may not be a common activity, it still may be useful to try to learn a bit about the team, project, and processes that the interviewee is associated with so that you don't come into the interview completely cold.  It can also build some level of trust and understanding as it shows that you've "done your homework."
 
 
-##Conducting the interview
+## Conducting the interview
 
 The most important phase of interview research is actually conducting the interview.  Here are some suggestions.
 
@@ -69,7 +69,7 @@ We usually bring a small token of appreciation and give it to the interviewee at
 
 When leaving, let them know if and how they'll hear from you in the future.  I often let people know that I'll pass along the final report or paper.  I also often ask if I can email them if I need any clarification on anything.
 
-##Post-Interview Notes & Discussion
+## Post-Interview Discussion & Notes
 
 There are a number of things that we try to do as soon as possible after the interview while the interview is fresh in our minds.
 
@@ -77,17 +77,17 @@ Since I often interview with another person, we often talk about the things that
 
 Based on these conversations and my own thoughts and impressions from the interview, I try to write down post-interview notes.  I use the notes taken during the interview as part of the basis for this, but the post-interview are more coherent, organized, and thoughtful because they are not as constrained by time as in-interview notes.
 
-##Transcription
+## Transcription
 
 The decision about whether and how to transcribe an interview can be a difficult one.  Transcribing by hand takes a large amount of time.  It's not uncommon to for each minute of interview time to take five minutes of transcription time!  There are services that transcribe interview recordings, but they can be expensive, often take a fair amount of time, and may not be familiar with technical jargon.  Still, depending on the context, a transcription may be worth the cost.  
 
 As an alternative to transcription, some of my interns have taken an approach that I call "chunked transcription".  They would listen to a ten to thirty second chunk of a recording, write down the main point or idea in the chunk, and then move to the next chunk.   This doesn't need to be as precise as verbatim transcription, but still is able to capture the majority of the valuable content.  These chunks end up being quite amenable to card sorting, the most common form of interview data analysis that we use.
 
-##Analysis
+## Analysis
 
 The must fruitful method we have found for analyzing interview responses is *card sorting*.  This entails literally printing off the individual answers to interview questions onto (often hundreds of) cards and then grouping the answers into themes which can be used to organize reporting, can inform additional research methods such as creating surveys for quantitative support, or can be analyzed individually.  Card sorts are beyond the scope of this chapter and can be used for almost any form of qualitative data such as open survey responses.  For details, we refer the reader to chapter **[Insert title and number of card sort chapter here]**.
 
-##Reporting
+## Reporting
 
 There are a number of ways to report the results of interviews in papers and I think the best way to learn is by reading a number of interview-based research papers.
 
@@ -101,7 +101,7 @@ Be careful about providing quotes from interviews in a publication.  It can be t
 
 Finally, resist the temptation to apply quantitative methods to interview results.  It's fine to say that only one person mentioned some topic, or almost everyone answered a particular question in the same way, but calculating confidence intervals from interview data probably not a good idea.
 
-##Now Go Interview!
+## Now Go Interview!
 
 Those who haven't conducted interviews before are often hesitant to try.  You may feel more comfortable looking at raw data in the comfort of your own lab.  Numbers can't put you on the spot or make you feel awkward.  All I can say is that I've learned more about how software engineering takes place through interviews than I have through all of the other research methods I've used combined and I started with *much* less information about how to do it than is in this chapter.  I hope this chapter has given you a few things to help you include interviews in your own research.
 
